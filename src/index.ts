@@ -16,6 +16,7 @@ export type {
   Notification,
   NotificationData,
   NotificationsResponse,
+  ActionSummary,
   Post,
   PostStream,
   Poster,

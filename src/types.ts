@@ -65,6 +65,16 @@ export interface Post {
   reads: number;
   score: number;
   topic_id: number;
+  yours?: boolean;
+  like_count?: number;
+  actions_summary?: ActionSummary[];
+}
+
+export interface ActionSummary {
+  id: number;
+  count?: number;
+  acted?: boolean;
+  can_act?: boolean;
 }
 
 export interface User {
