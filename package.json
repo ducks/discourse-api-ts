@@ -1,6 +1,6 @@
 {
   "name": "discourse-api-ts",
-  "version": "20260227.0.1",
+  "version": "20260227.0.0",
   "description": "TypeScript client for the Discourse API",
   "type": "module",
   "main": "dist/index.js",
