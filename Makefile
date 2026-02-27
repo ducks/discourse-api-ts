@@ -2,10 +2,21 @@
 
 # Auto-generate version from today's date with auto-incrementing patch
 # Format: YYYYMMDD.0.X where X increments if releasing multiple times per day
+# Checks both git tags and npm registry to avoid collisions
+PACKAGE_NAME := discourse-api-ts
 define get_next_version
 $(shell \
 	TODAY=$$(date +%Y%m%d); \
-	LATEST=$$(git tag -l "v$$TODAY.*" 2>/dev/null | sort -V | tail -1); \
+	GIT_LATEST=$$(git tag -l "v$$TODAY.*" 2>/dev/null | sort -V | tail -1 | sed 's/^v//'); \
+	NPM_LATEST=$$(npm view $(PACKAGE_NAME) versions --json 2>/dev/null | grep "\"$$TODAY\." | tail -1 | tr -d ' ",' || true); \
+	LATEST=""; \
+	if [ -n "$$GIT_LATEST" ] && [ -n "$$NPM_LATEST" ]; then \
+		LATEST=$$(printf '%s\n%s' "$$GIT_LATEST" "$$NPM_LATEST" | sort -V | tail -1); \
+	elif [ -n "$$GIT_LATEST" ]; then \
+		LATEST="$$GIT_LATEST"; \
+	elif [ -n "$$NPM_LATEST" ]; then \
+		LATEST="$$NPM_LATEST"; \
+	fi; \
 	if [ -z "$$LATEST" ]; then \
 		echo "$$TODAY.0.0"; \
 	else \
