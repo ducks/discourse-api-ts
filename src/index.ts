@@ -1,0 +1,26 @@
+export { DiscourseClient } from "./client.js";
+export { DiscourseError, ApiError, RequestError } from "./error.js";
+export type {
+  Category,
+  CategoryList,
+  CategoryListData,
+  ChatChannel,
+  ChatChannelsResponse,
+  ChatMessage,
+  ChatMessagesMeta,
+  ChatMessagesResponse,
+  CreateMessageResponse,
+  CreatePostResponse,
+  ErrorResponse,
+  LatestResponse,
+  Notification,
+  NotificationData,
+  NotificationsResponse,
+  Post,
+  PostStream,
+  Poster,
+  Topic,
+  TopicList,
+  TopicResponse,
+  User,
+} from "./types.js";

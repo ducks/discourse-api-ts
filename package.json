@@ -1,0 +1,29 @@
+{
+  "name": "discourse-api-ts",
+  "version": "20260227.0.0",
+  "description": "TypeScript client for the Discourse API",
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "clean": "rm -rf dist"
+  },
+  "keywords": [
+    "discourse",
+    "api",
+    "forum"
+  ],
+  "author": "Jake Goldsborough",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ducks/discourse-api-ts.git"
+  },
+  "devDependencies": {
+    "typescript": "^5.3.3"
+  }
+}
