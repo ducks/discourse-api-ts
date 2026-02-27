@@ -6,11 +6,16 @@ import type {
   ChatMessagesResponse,
   CreateMessageResponse,
   CreatePostResponse,
+  DirectoryResponse,
   ErrorResponse,
   LatestResponse,
   NotificationsResponse,
   Post,
+  SearchResponse,
   TopicResponse,
+  TopicStatusResponse,
+  UserActionsResponse,
+  UserResponse,
 } from "./types.js";
 
 type AuthType =
@@ -295,5 +300,78 @@ export class DiscourseClient {
 
   async getNotifications(): Promise<NotificationsResponse> {
     return this.get<NotificationsResponse>("/notifications.json");
+  }
+
+  // Search
+
+  async search(term: string, options?: {
+    page?: number;
+  }): Promise<SearchResponse> {
+    let path = `/search.json?q=${encodeURIComponent(term)}`;
+    if (options?.page !== undefined) {
+      path += `&page=${options.page}`;
+    }
+    return this.get<SearchResponse>(path);
+  }
+
+  // Users
+
+  async getUser(username: string): Promise<UserResponse> {
+    return this.get<UserResponse>(`/u/${encodeURIComponent(username)}.json`);
+  }
+
+  async getUserActions(username: string, options?: {
+    offset?: number;
+    filter?: number;
+  }): Promise<UserActionsResponse> {
+    let path = `/user_actions.json?username=${encodeURIComponent(username)}`;
+    if (options?.offset !== undefined) {
+      path += `&offset=${options.offset}`;
+    }
+    if (options?.filter !== undefined) {
+      path += `&filter=${options.filter}`;
+    }
+    return this.get<UserActionsResponse>(path);
+  }
+
+  async getUserDirectory(options?: {
+    period?: "daily" | "weekly" | "monthly" | "quarterly" | "yearly" | "all";
+    order?: string;
+    page?: number;
+  }): Promise<DirectoryResponse> {
+    let path = `/directory_items.json?period=${options?.period || "weekly"}`;
+    if (options?.order) {
+      path += `&order=${encodeURIComponent(options.order)}`;
+    }
+    if (options?.page !== undefined) {
+      path += `&page=${options.page}`;
+    }
+    return this.get<DirectoryResponse>(path);
+  }
+
+  // Topic management
+
+  async updateTopic(topicId: number, changes: {
+    title?: string;
+    category_id?: number;
+    tags?: string[];
+  }): Promise<TopicResponse> {
+    const body: Record<string, unknown> = {};
+    if (changes.title !== undefined) body.title = changes.title;
+    if (changes.category_id !== undefined) body.category_id = changes.category_id;
+    if (changes.tags !== undefined) body.tags = changes.tags;
+    return this.put<TopicResponse>(`/t/-/${topicId}.json`, body);
+  }
+
+  async deleteTopic(topicId: number): Promise<void> {
+    await this.delete(`/t/${topicId}.json`);
+  }
+
+  async setTopicStatus(topicId: number, status: {
+    status: "closed" | "pinned" | "archived" | "visible";
+    enabled: boolean;
+    until?: string;
+  }): Promise<TopicStatusResponse> {
+    return this.put<TopicStatusResponse>(`/t/${topicId}/status.json`, status);
   }
 }

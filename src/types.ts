@@ -204,3 +204,157 @@ export interface NotificationData {
 export interface NotificationsResponse {
   notifications: Notification[];
 }
+
+// Search
+
+export interface SearchResponse {
+  posts: SearchPost[];
+  topics: SearchTopic[];
+  users: SearchUser[];
+  categories: Category[];
+  grouped_search_result: GroupedSearchResult;
+}
+
+export interface SearchPost {
+  id: number;
+  username: string;
+  avatar_template: string;
+  created_at: string;
+  like_count: number;
+  blurb: string;
+  post_number: number;
+  topic_title_headline: string;
+  topic_id: number;
+}
+
+export interface SearchTopic {
+  id: number;
+  title: string;
+  slug: string;
+  posts_count: number;
+  reply_count: number;
+  views: number;
+  like_count: number;
+  created_at: string;
+  category_id?: number;
+  tags?: string[];
+  has_accepted_answer?: boolean;
+}
+
+export interface SearchUser {
+  id: number;
+  username: string;
+  name?: string;
+  avatar_template: string;
+}
+
+export interface GroupedSearchResult {
+  more_posts?: boolean;
+  more_users?: boolean;
+  more_categories?: boolean;
+  term: string;
+  search_log_id?: number;
+  more_full_page_results?: boolean;
+  can_create_topic?: boolean;
+  post_ids: number[];
+  user_ids: number[];
+  category_ids: number[];
+}
+
+// Users
+
+export interface UserResponse {
+  user: UserProfile;
+}
+
+export interface UserProfile {
+  id: number;
+  username: string;
+  name?: string;
+  avatar_template: string;
+  title?: string;
+  created_at: string;
+  last_posted_at?: string;
+  last_seen_at?: string;
+  trust_level: number;
+  moderator: boolean;
+  admin: boolean;
+  post_count: number;
+  topics_entered: number;
+  posts_read_count: number;
+  days_visited: number;
+  time_read: number;
+  likes_given: number;
+  likes_received: number;
+  badge_count: number;
+  bio_raw?: string;
+  bio_cooked?: string;
+  bio_excerpt?: string;
+  website?: string;
+  website_name?: string;
+  location?: string;
+  groups?: UserGroup[];
+  featured_user_badge_ids?: number[];
+  invited_by?: User;
+}
+
+export interface UserGroup {
+  id: number;
+  name: string;
+  display_name: string;
+  automatic: boolean;
+  primary: boolean;
+  title?: string;
+  flair_url?: string;
+  flair_bg_color?: string;
+  flair_color?: string;
+}
+
+export interface UserActionsResponse {
+  user_actions: UserAction[];
+}
+
+export interface UserAction {
+  action_type: number;
+  created_at: string;
+  excerpt: string;
+  acting_username: string;
+  post_id?: number;
+  post_number?: number;
+  topic_id: number;
+  slug: string;
+  title: string;
+  category_id?: number;
+  username: string;
+  name?: string;
+  avatar_template: string;
+}
+
+export interface DirectoryResponse {
+  directory_items: DirectoryItem[];
+  meta: DirectoryMeta;
+}
+
+export interface DirectoryItem {
+  id: number;
+  likes_received: number;
+  likes_given: number;
+  topics_entered: number;
+  topic_count: number;
+  post_count: number;
+  posts_read: number;
+  days_visited: number;
+  user: User;
+}
+
+export interface DirectoryMeta {
+  last_updated_at: string;
+  total_rows_directory_items: number;
+}
+
+// Topic management
+
+export interface TopicStatusResponse {
+  success: string;
+  topic_status_update?: unknown;
+}
